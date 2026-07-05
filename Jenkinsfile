@@ -1,38 +1,74 @@
 pipeline {
-    agent { 
+    agent {
         node {
-            label 'docker-agent-alpine'
-            }
-      }
-    triggers {
-        pollSCM '* * * * *'
+            label 'docker-agent-node'
+        }
     }
+
+    triggers {
+        pollSCM('* * * * *')
+    }
+
     stages {
-        stage('Build') {
+        stage('Install Backend Dependencies') {
             steps {
-                echo "Building.."
-                sh '''
-                cd myapp
-                pip install -r requirements.txt
-                '''
+                echo "Installing backend dependencies..."
+                dir('backend') {
+                    sh '''
+                        npm install
+                    '''
+                }
             }
         }
+
+        stage('Build Backend') {
+            steps {
+                echo "Building backend..."
+                dir('backend') {
+                    sh '''
+                        npm run build
+                    '''
+                }
+            }
+        }
+
+        stage('Install Frontend Dependencies') {
+            steps {
+                echo "Installing frontend dependencies..."
+                dir('frontend') {
+                    sh '''
+                        npm install
+                    '''
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                echo "Building frontend..."
+                dir('frontend') {
+                    sh '''
+                        npm run build
+                    '''
+                }
+            }
+        }
+
         stage('Test') {
             steps {
-                echo "Testing.."
-                sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
-                '''
+                echo "Running tests..."
+                dir('backend') {
+                    sh '''
+                        npm test
+                    '''
+                }
             }
         }
+
         stage('Deliver') {
             steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
+                echo "Delivery stage..."
+                sh 'echo "Doing delivery stuff..."'
             }
         }
     }
