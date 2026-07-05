@@ -46,3 +46,5 @@ Open `http://localhost:5173` in your browser.
   - `POST /notes` — create a note (`{ title, content }`)
   - `PUT /notes/:id` — update a note (`{ title, content }`)
   - `DELETE /notes/:id` — delete a note
+ 
+  - 
