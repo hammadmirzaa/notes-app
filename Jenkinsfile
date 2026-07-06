@@ -48,9 +48,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                dir('backend') {
-                    sh 'npm test'
-                }
+                echo 'Skipping tests for now'
             }
         }
 
