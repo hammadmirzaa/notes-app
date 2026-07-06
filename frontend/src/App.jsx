@@ -89,7 +89,7 @@ export default function App() {
     <div className="app">
       <aside className="sidebar">
         <div className="sidebar-header">
-          <h1>Notes</h1>
+          <h1>Notes V2</h1>
           <button className="new-btn" onClick={handleNewNote}>
             + New
           </button>
